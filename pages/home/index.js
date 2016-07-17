@@ -10,13 +10,10 @@
 
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
-import { title, html } from './index.md';
+import Content from '../../components/Content';
+import { title } from './index.md';
 
 class HomePage extends React.Component {
-
-  static propTypes = {
-    articles: PropTypes.array.isRequired,
-  };
 
   componentDidMount() {
     document.title = title;
@@ -25,16 +22,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <Layout>
-        <div dangerouslySetInnerHTML={{ __html: html }} />
-        <h4>Articles</h4>
-        <ul>
-          {this.props.articles.map(article =>
-            <li><a href={article.url}>{article.title}</a> by {article.author}</li>
-          )}
-        </ul>
-        <p>
-          <br /><br />
-        </p>
+        <Content />
       </Layout>
     );
   }

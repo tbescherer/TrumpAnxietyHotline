@@ -15,12 +15,15 @@ const del = require('del');
 const ejs = require('ejs');
 const webpack = require('webpack');
 
-// TODO: Update configuration settings
 const config = {
-  title: 'React Static Boilerplate',        // Your website title
-  url: 'https://rsb.kriasoft.com',          // Your website URL
-  project: 'react-static-boilerplate',      // Firebase project. See README.md -> How to Deploy
-  trackingID: 'UA-XXXXX-Y',                 // Google Analytics Site's ID
+    apiKey: "AIzaSyAw_lwvj7Iyr-GIAAG470P-a0rzwuLPutw",
+    authDomain: "firetest-ea636.firebaseapp.com",
+    databaseURL: "https://firetest-ea636.firebaseio.com",
+    storageBucket: "firetest-ea636.appspot.com",
+    title: 'firetest-ea636',        // Your website title
+    url: 'https://firetest-ea636.firebaseapp.com/',          // Your website URL
+    project: 'firetest-ea636',      // Firebase project. See README.md -> How to Deploy
+    trackingID: 'UA-XXXXX-Y',                 // Google Analytics Site's ID
 };
 
 const tasks = new Map(); // The collection of automation tasks ('clean', 'build', 'publish', etc.)
