@@ -7,10 +7,11 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE.txt file in the root directory of this source tree.
  */
-
+import {connect} from 'react-redux';
 import React from 'react';
 import Header from './Header';
 import s from './Layout.css';
+import store from '../../core/store.js';
 
 class Layout extends React.Component {
 
@@ -23,6 +24,10 @@ class Layout extends React.Component {
       }
   }
 
+  componentWillMount() {
+      this.listenPosts()
+  }
+
   componentDidMount() {
     window.componentHandler.upgradeElement(this.root);
   }
@@ -30,6 +35,18 @@ class Layout extends React.Component {
   componentWillUnmount() {
     window.componentHandler.downgradeElements(this.root);
   }
+
+  listenPosts = () => {
+      store.dispatch({type: 'FETCH_POSTS'});
+      let theState = store.getState();
+      var recentPostsRef = firebase.database().ref('posts').limitToLast(100);
+      recentPostsRef.on('child_added', function(data){
+          store.dispatch({type:'ADD_POST', data: {'posts': data.val()}});
+      });
+      recentPostsRef.on('child_removed', function(data){
+          store.dispatch({type:'DELETE_POST', data: {'posts': data.val()}});
+      })
+  };
 
   login() {
       let authProvider = new firebase.auth.GoogleAuthProvider();
@@ -64,7 +81,7 @@ class Layout extends React.Component {
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer" ref={node => (this.root = node)}>
         <div className="mdl-layout__inner-container">
           <Header>
-            <span className="mdl-layout-title">React Firebase Demo App</span>
+            <span className="mdl-layout-title">Trump Anxiety Hotline</span>
             <div className="mdl-layout-spacer"></div>
             {this.renderAuth()}
           </Header>

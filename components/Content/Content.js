@@ -14,12 +14,10 @@ class Content extends React.Component {
     }
 
     componentDidMount() {
-        const that = this;
-        var recentPostsRef = firebase.database().ref('posts').limitToLast(100);
-        recentPostsRef.on('child_added', function(data){
-            let oldPosts = that.state.posts.slice();
-            oldPosts.push(data.val())
-            that.setState({posts: oldPosts})
+        let that = this;
+        that.context.store.subscribe(function() {
+            let state = that.context.store.getState();
+            that.setState({posts: state.posts});
         })
     }
 
@@ -36,6 +34,10 @@ class Content extends React.Component {
 
     }
 
+    deletePost() {
+        console.log("should delete here");
+    }
+
     changeBlogText(event) {
         this.setState({blogText: event.target.value})
     }
@@ -49,7 +51,7 @@ class Content extends React.Component {
             )
         })
         return (
-            <div>
+            <div onClick={this.deletePost}>
                 {posts}
             </div>
         )
@@ -70,6 +72,10 @@ class Content extends React.Component {
             </div>
         );
     }
+};
+
+Content.contextTypes = {
+    store: React.PropTypes.object
 };
 
 export default Content;
