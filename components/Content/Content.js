@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Captcha from '../Captcha'
 class Content extends React.Component {
     constructor(props) {
         super(props);
@@ -9,6 +9,7 @@ class Content extends React.Component {
         this.state = {
             blogText: "",
             showMessage: true,
+            showCaptcha: false,
             error: false,
             posts: []
         }
@@ -107,7 +108,7 @@ class Content extends React.Component {
                         and sharing their anxiety with others.
                     </p>
                 </div>
-                <button onClick={() => {this.setState({showMessage: false})}}className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                <button onClick={() => {this.setState({showCaptcha: true})}}className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
                     Message Another Trump Anxiety Sufferer Now
                 </button>
             </div>
@@ -115,9 +116,15 @@ class Content extends React.Component {
     }
 
     render() {
+        let that = this;
         return (
             <div>
                 {this.state.showMessage ? this.renderWelcomeMessage() : this.renderPostArea()}
+                <Captcha
+                    handleClose={() => {that.setState({showCaptcha: false})}}
+                    handleSubmit={() => {that.setState({showMessage: false, showCaptcha: false})}}
+                    open={this.state.showCaptcha}
+                    />
             </div>
         );
     }

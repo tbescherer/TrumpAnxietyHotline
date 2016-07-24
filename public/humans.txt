@@ -3,11 +3,11 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Tom Bescherer -- Developer -- https://twitter.com/TomBescherer
 
 # THANKS
 
-    <name>
+    Maxfield Lewin
 
 # TECHNOLOGY COLOPHON
 
