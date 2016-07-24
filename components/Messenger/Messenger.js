@@ -27,7 +27,7 @@ class Messenger extends React.Component {
         })
     };
 
-    componentDidMount() {
+    componentWillMount() {
         let that = this;
         that.listenPosts();
         firebase.auth().signInAnonymously().catch(function(error) {
