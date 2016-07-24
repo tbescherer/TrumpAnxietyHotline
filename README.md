@@ -1,4 +1,6 @@
-# FireBase React Demo App
-# Live at https://firetest-ea636.firebaseapp.com/
+# Trump Anxiety Hotline
+# Soon to be live at www.TrumpAnxietyHotline.com
 
-## Made using React Static  https://github.com/kriasoft/react-static-boilerplate
+
+## Made using React Static Boilerplate  https://github.com/kriasoft/react-static-boilerplate
+## And based on the Trump Anxiety Hotline idea from Mike Pesca's excellent Podcast The Gist
