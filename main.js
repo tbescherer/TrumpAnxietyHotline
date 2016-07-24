@@ -1,20 +1,27 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
-
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
 import { Provider } from 'react-redux';
-
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import store from './core/store';
 import router from './core/router';
 import history from './core/history';
 
 let routes = require('./routes.json'); // Loaded with utils/routes-loader.js
 const container = document.getElementById('container');
+injectTapEventPlugin();
 
 function renderComponent(component) {
-  ReactDOM.render(<Provider store={store}>{component}</Provider>, container);
+
+  ReactDOM.render(
+      <Provider store={store}>
+        <MuiThemeProvider>
+            {component}
+        </MuiThemeProvider>
+      </Provider>, container);
 }
 
 // Find and render a web page matching the current URL path,

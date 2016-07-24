@@ -30,7 +30,7 @@ class Captcha extends React.Component {
         ];
         return (
             <Dialog
-              title="Confirm you suffer from Trump Anxiety"
+              title="Confirm you have Trump Anxiety"
               actions={actions}
               modal={false}
               open={this.props.open}

@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import Content from '../../components/Content';
 import { title } from './index.md';
-injectTapEventPlugin();
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 class HomePage extends React.Component {
 
   componentDidMount() {

@@ -34,11 +34,10 @@ class Messenger extends React.Component {
           var errorCode = error.code;
           var errorMessage = error.message;
         });
-        store.dispatch({type: "LOG_IN", data: {user_id: firebase.auth().currentUser.uid}})
         that.context.store.subscribe(function() {
             let state = that.context.store.getState();
-            that.setState({posts: state.posts, user_id: state.user_id});
-        })
+            that.setState({posts: state.posts});
+        });
     }
 
     post() {
@@ -70,7 +69,7 @@ class Messenger extends React.Component {
 
     renderPosts() {
         let posts = this.state.posts.map(function(post) {
-            let isCurrentUser = post.user_id === firebase.auth().currentUser.uid;
+            let isCurrentUser = (firebase.auth.currentUser && post.user_id === firebase.auth().currentUser.uid);
             return (
                 <div key={post.text}>
                     {isCurrentUser ? "You" : "Anonymous Ally"}: {post.text}
