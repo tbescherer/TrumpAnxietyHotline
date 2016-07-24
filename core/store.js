@@ -13,7 +13,13 @@ const deletePost = (state, data) => {
     return nextState;
 }
 
-const reducer = (state={posts:[]}, action) => {
+const logIn = (state, data) => {
+    let user_id = data.user_id;
+    let nextState = {...state, user_id};
+    return nextState;
+}
+
+const reducer = (state={posts:[], user_id: ""}, action) => {
     switch (action.type) {
       case 'FETCH_POSTS':
         return state;
@@ -21,11 +27,13 @@ const reducer = (state={posts:[]}, action) => {
         return addPost(state, action.data);
       case 'DELETE_POST':
         return deletePost(state, action.data);
+      case 'LOG_IN':
+        return logIn(state, action.data);
       default:
         return state;
     }
 }
 
-const store = createStore(reducer);
+const store = createStore(reducer, window.devToolsExtension && window.devToolsExtension());
 
 export default store;

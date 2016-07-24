@@ -1,0 +1,6 @@
+{
+  "name": "Messenger",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Messenger.js"
+}

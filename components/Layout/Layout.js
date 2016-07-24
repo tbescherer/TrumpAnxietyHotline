@@ -8,64 +8,18 @@ class Layout extends React.Component {
 
   constructor(props) {
       super(props);
-      this.login = this.login.bind(this);
-      this.logout = this.logout.bind(this);
-      this.state = {
-          loggedIn: !!firebase.auth().currentUser
-      }
-  }
-
-  componentWillMount() {
-      this.listenPosts()
   }
 
   componentDidMount() {
-    window.componentHandler.upgradeElement(this.root);
+      window.componentHandler.upgradeElement(this.root);
   }
 
   componentWillUnmount() {
     window.componentHandler.downgradeElements(this.root);
   }
 
-  listenPosts = () => {
-      store.dispatch({type: 'FETCH_POSTS'});
-      let theState = store.getState();
-      var recentPostsRef = firebase.database().ref('posts').limitToLast(100);
-      recentPostsRef.on('child_added', function(data){
-          store.dispatch({type:'ADD_POST', data: {'posts': data.val()}});
-      });
-      recentPostsRef.on('child_removed', function(data){
-          store.dispatch({type:'DELETE_POST', data: {'posts': data.val()}});
-      })
-  };
 
-  login() {
-      let authProvider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(authProvider);
-      this.setState({loggedIn: true});
-  }
 
-  logout() {
-      this.setState({loggedIn: false});
-      return firebase.auth().signOut();
-
-  }
-
-  renderAuth() {
-      if (this.state.loggedIn) {
-          return (
-              <button onClick={this.logout} className="mdl-button mdl-js-button mdl-button--raised">
-                  Logout
-              </button>
-          )
-      } else {
-          return (
-              <button onClick={this.login} className="mdl-button mdl-js-button mdl-button--raised">
-                  Login
-              </button>
-          )
-      }
-  }
 
   render() {
     return (
