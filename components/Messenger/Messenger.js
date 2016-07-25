@@ -11,25 +11,50 @@ class Messenger extends React.Component {
             user_id: "",
             posts: [],
             blogText: "",
-            error: ""
+            error: "",
+            conversationID: ""
         }
     }
 
-    listenPosts = () => {
-        store.dispatch({type: 'FETCH_POSTS'});
-        let theState = store.getState();
-        var recentPostsRef = firebase.database().ref('posts').limitToLast(100);
-        recentPostsRef.on('child_added', function(data){
-            store.dispatch({type:'ADD_POST', data: {'posts': data.val()}});
+    startConversationAndListen = () => {
+        let conversationRef = firebase.database().ref('conversations');
+        let that = this;
+        var newConvoKey = conversationRef.push().key;
+        conversationRef.transaction(function(conversation) {
+            if (conversation === null) {
+                let update = {};
+                update['open_conversation'] = newConvoKey;
+                update[newConvoKey] = {};
+                return update;
+            } else if (conversation.open_conversation && conversation[conversation.open_conversation]["participant1"] !== firebase.auth().currentUser.uid) {
+                console.log("no second participant");
+                newConvoKey = conversation.open_conversation;
+                conversation[newConvoKey]["participant2"] = firebase.auth().currentUser.uid;
+                conversation['open_conversation'] = false;
+                return conversation;
+            } else {
+                conversation['open_conversation'] = newConvoKey;
+                conversation[newConvoKey
+                ] = {
+                    'participant1': firebase.auth().currentUser.uid
+                };
+                return conversation;
+            }
+        }, function(error, committed, snapshot){
+            that.setState({conversationID: newConvoKey});
+            var recentPostsRef = firebase.database().ref('conversations/' + newConvoKey + '/posts').limitToLast(100);
+            recentPostsRef.on('child_added', function(data){
+                store.dispatch({type:'ADD_POST', data: {'posts': data.val()}});
+            });
+            recentPostsRef.on('child_removed', function(data){
+                store.dispatch({type:'DELETE_POST', data: {'posts': data.val()}});
+            })
         });
-        recentPostsRef.on('child_removed', function(data){
-            store.dispatch({type:'DELETE_POST', data: {'posts': data.val()}});
-        })
     };
 
     componentWillMount() {
         let that = this;
-        that.listenPosts();
+        that.startConversationAndListen();
         firebase.auth().signInAnonymously().catch(function(error) {
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -41,22 +66,26 @@ class Messenger extends React.Component {
     }
 
     post() {
-        let newPostKey = firebase.database().ref().child('posts').push().key;
+        let newPostKey = firebase.database().ref().child('conversations').push().key;
         let update = {}
         let that = this;
         console.log(firebase.auth().currentUser.uid);
         let postData = {
             'text': this.state.blogText,
             'user_id': firebase.auth().currentUser.uid,
-            'conversation_id': 1
         }
-        update['/posts/' + newPostKey] = postData;
+        console.log(this.state.conversationID)
+        update['/conversations/' + this.state.conversationID + "/posts/" + newPostKey] = postData;
         firebase.database().ref().update(update).then(function() {
             that.setState({blogText: ""});
         }).catch((e) => {
             that.setState({error: true});
         });
 
+    }
+
+    startOrJoinConversation() {
+        let newConversationKey = firebase.database().ref.child('conversations')
     }
 
     deletePost() {
@@ -69,7 +98,7 @@ class Messenger extends React.Component {
 
     renderPosts() {
         let posts = this.state.posts.map(function(post) {
-            let isCurrentUser = (firebase.auth.currentUser && post.user_id === firebase.auth().currentUser.uid);
+            let isCurrentUser = (firebase.auth().currentUser && post.user_id === firebase.auth().currentUser.uid);
             return (
                 <div key={post.text}>
                     {isCurrentUser ? "You" : "Anonymous Ally"}: {post.text}

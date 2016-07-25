@@ -30,9 +30,9 @@ class Layout extends React.Component {
             <div className="mdl-layout-spacer"></div>
           </Header>
           <div className="mdl-layout__drawer">
-            <span className="mdl-layout-title">Menu</span>
+            <span className="mdl-layout-title" style={{cursor: 'pointer'}} onClick={() => {window.location.href=window.location.origin}}>Home</span>
             <nav className="mdl-navigation" style={{cursor: 'pointer'}}>
-              <div className="mdl-navigation__link" onClick={() => {window.location.href="/messages"}}>Start a Conversation</div>
+              <div className="mdl-navigation__link" onClick={() => {window.location.href="/messages"}}>Start A Conversation</div>
               <div className="mdl-navigation__link" onClick={() => {window.location.href="/analytics"}}>Analytics</div>
               <div className="mdl-navigation__link" onClick={() => {window.location.href="/links"}}>Quick Links</div>
               <div className="mdl-navigation__link" onClick={() => {window.location.href="/about"}}>About</div>
