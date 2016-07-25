@@ -1,21 +1,21 @@
 import store from '../../core/store.js';
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
-import Messenger from '../../components/Messenger';
-class MessagesPage extends React.Component {
+import Links from '../../components/Links';
+class LinksPage extends React.Component {
 
   componentDidMount() {
-    document.title = 'Trump Anxiety Hotline';
+    document.title = 'Trump Anxiety Hotline Links';
   }
 
   render() {
     return (
       <Layout>
-        <Messenger />
+        <Links />
       </Layout>
     );
   }
 
 }
 
-export default MessagesPage;
+export default LinksPage;

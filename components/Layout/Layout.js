@@ -33,12 +33,10 @@ class Layout extends React.Component {
             <span className="mdl-layout-title">Menu</span>
             <nav className="mdl-navigation" style={{cursor: 'pointer'}}>
               <div className="mdl-navigation__link" onClick={() => {window.location.href="/messages"}}>Start a Conversation</div>
-              <div className="mdl-navigation__link">Analytics</div>
-              <div className="mdl-navigation__link">Quick Links</div>
-              <div className="mdl-navigation__link">Donate</div>
-              <div className="mdl-navigation__link">Volunteer</div>
-              <div className="mdl-navigation__link">About</div>
-              <div className="mdl-navigation__link">Buy a Hat</div>
+              <div className="mdl-navigation__link" onClick={() => {window.location.href="/analytics"}}>Analytics</div>
+              <div className="mdl-navigation__link" onClick={() => {window.location.href="/links"}}>Quick Links</div>
+              <div className="mdl-navigation__link" onClick={() => {window.location.href="/about"}}>About</div>
+              <div className="mdl-navigation__link" onClick={() => {window.location.href="http://www.zazzle.com/trumpanxietyhotline"}}>Buy a Hat</div>
             </nav>
           </div>
           <main className="mdl-layout__content">

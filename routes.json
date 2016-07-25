@@ -23,5 +23,13 @@
   {
     "path": "/messages",
     "page": "./pages/messages"
+  },
+  {
+    "path": "/links",
+    "page": "./pages/links"
+  },
+  {
+    "path": "/analytics",
+    "page": "./pages/analytics"
   }
 ]

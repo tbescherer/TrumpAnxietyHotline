@@ -1,14 +1,6 @@
 # humanstxt.org/
 # The humans responsible & technology colophon
 
-# TEAM
-
-    Tom Bescherer -- Developer -- https://twitter.com/TomBescherer
-
-# THANKS
-
-    Maxfield Lewin
-
 # TECHNOLOGY COLOPHON
 
     JavaScript, HTML5, CSS3
