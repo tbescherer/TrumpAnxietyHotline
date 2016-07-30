@@ -40,8 +40,8 @@ class Messenger extends React.Component {
                 }
                 that.setState({'alone': false});
                 conversation[newConvoKey]["participant2"] = participantData;
-                conversation = that.postAdminMessage(conversation, newConvoKey, "Both participants connected at " + now.toTimeString())
-                conversation = that.postAdminMessage(conversation, newConvoKey, "OK, Let it all out!")
+                conversation = that.postAdminMessage(conversation, newConvoKey, "Second participant connected at " + now.toTimeString())
+                conversation = that.postAdminMessage(conversation, newConvoKey, "OK, you're both here, let it all out!")
                 conversation['open_conversation'] = false;
                 return conversation;
             } else {
@@ -54,6 +54,8 @@ class Messenger extends React.Component {
                 conversation[newConvoKey] = {
                     'participant1': participantData
                 };
+                conversation = that.postAdminMessage(conversation, newConvoKey, "First participant connected at " + now.toTimeString())
+                conversation = that.postAdminMessage(conversation, newConvoKey, "Waiting for a second participant...")
                 var participantRef = firebase.database().ref('conversations/' + newConvoKey + '/participant2').limitToLast(1);
                 participantRef.on('value', function(data){
                     console.log(data.val());
