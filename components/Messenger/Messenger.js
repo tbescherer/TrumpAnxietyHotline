@@ -36,11 +36,12 @@ class Messenger extends React.Component {
                 let now = new Date();
                 let participantData = {
                     'id': firebase.auth().currentUser.uid,
-                    'connected_datetime': now.toDateString()
+                    'connected_datetime': now.toTimeString()
                 }
                 that.setState({'alone': false});
                 conversation[newConvoKey]["participant2"] = participantData;
-                conversation = that.postAdminMessage(conversation, newConvoKey, "Both participants connected")
+                conversation = that.postAdminMessage(conversation, newConvoKey, "Both participants connected at " + now.toTimeString())
+                conversation = that.postAdminMessage(conversation, newConvoKey, "OK, Let it all out!")
                 conversation['open_conversation'] = false;
                 return conversation;
             } else {
