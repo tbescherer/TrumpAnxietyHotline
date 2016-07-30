@@ -40,6 +40,7 @@ class Messenger extends React.Component {
                 }
                 that.setState({'alone': false});
                 conversation[newConvoKey]["participant2"] = participantData;
+                conversation = that.postAdminMessage(conversation, newConvoKey, "Both participants connected")
                 conversation['open_conversation'] = false;
                 return conversation;
             } else {
@@ -76,12 +77,17 @@ class Messenger extends React.Component {
     postAdminMessage(conversationsRef, conversationID, postBody) {
         let now = new Date();
         let newPostKey = firebase.database().ref().child('conversations').push().key;
-        let postData = {
+        let postData = {};
+        let existingConvo = conversationsRef[conversationID];
+        let postInfo = {
             'text': postBody,
             'user_id': 'admin',
             'post_datetime': now.toDateString(),
         }
-        conversationsRef[conversationID]["posts"][newPostKey] = postData;
+        let existingPosts = existingConvo["posts"] || {};
+        existingPosts[newPostKey] = postInfo;
+        existingConvo["posts"] = existingPosts;
+        conversationsRef[conversationID] = existingConvo;
         return conversationsRef;
     }
 
@@ -134,16 +140,27 @@ class Messenger extends React.Component {
         let posts = this.state.posts.map(function(post) {
             let isCurrentUser = (firebase.auth().currentUser && post.user_id === firebase.auth().currentUser.uid);
             return (
-                <div key={post.text}>
-                    {isCurrentUser ? "You" : "Anonymous Ally"}: {post.text}
+                <div key={post.text} style={{marginLeft: '10px'}}>
+                    {isCurrentUser ? "You" : (post.user_id == "admin" ? "Admin" : "Anonymous Ally")}: {post.text}
                 </div>
             )
         })
+        let style;
+        if (this.state.alone) {
+            style = {}
+        } else {
+            style = {background: '#4CAF50'}
+        }
         return (
-            <div style={{width: '90%', margin: 'auto', marginTop: '10px', paddingBottom: '10px'}} className="mdl-card mdl-shadow--2dp">
-                <div className="mdl-card__title" style={{fontSize: '24px'}}>Your Shared Anxiety</div>
-                {this.state.alone ? <div>You got here first</div> : <div>You both connected</div>}
-                <div className="mdl-card__supporting-text">
+            <div style={{width: '90%', display: 'block', position: 'relative', margin: 'auto', marginTop: '10px', paddingBottom: '10px'}} className="mdl-card mdl-shadow--2dp">
+                <div className="mdl-card__title" style={{fontSize: '24px', background: '#CFD8DC'}}>
+                Your Shared Anxiety
+                <div
+                    className="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
+                    style={Object.assign({cursor: 'default', marginRight: '0px'}, style)}
+                />
+                </div>
+                <div className="mdl-card__supporting-text" style={{height: '400px', overflowY: 'scroll', width: '100%', padding: '0px'}}>
                 {posts}
                 </div>
                 {this.renderPostArea()}
@@ -162,14 +179,10 @@ class Messenger extends React.Component {
 
     renderPostArea() {
         return (
-            <div style={{paddingLeft: '20px'}}>
-                <div className="mdl-textfield mdl-js-textfield">
-                    <input onChange={this.changeBlogText} onKeyDown={this.handleKeyDown} value={this.state.blogText} className="mdl-textfield__input" type="text" id="sample1"/>
-                    <label className="mdl-textfield__label" htmlFor="sample1">Text...</label>
+            <div style={{paddingLeft: '20px', paddingRight: '20px'}}>
+                <div className="mdl-textfield mdl-js-textfield" style={{width: '100%'}}>
+                    <input onChange={this.changeBlogText} placeholder="Enter your message..." onKeyDown={this.handleKeyDown} value={this.state.blogText} className="mdl-textfield__input" type="text" id="sample1"/>
                 </div>
-                <button onClick={this.post} className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
-                    <i className="material-icons">add</i>
-                </button>
                 {(this.state.error ? <div>Must be logged in</div> : null)}
             </div>
         )
