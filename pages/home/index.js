@@ -1,4 +1,3 @@
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import Content from '../../components/Content';

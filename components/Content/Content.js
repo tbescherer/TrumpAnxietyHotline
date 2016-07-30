@@ -72,7 +72,7 @@ class Content extends React.Component {
                         onClick={() => {this.setState({showCaptcha: true})}}
                         className="mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
                         style={{width: '100%'}}>
-                        Share Your Trump Anxiety Now
+                        Start Anonymous Chat
                     </button>
                 </div>
             </div>
